@@ -76,7 +76,7 @@ body:has(#modal[style*="flex"]) #combatHealth{opacity:.2}body.base-mode #combatH
   .stats{margin-top:9px;width:100%;max-width:none;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:5px;overflow:visible}
   .stats .chip{flex:0 0 auto;min-height:32px;padding:6px 8px;font-size:11px;border-radius:7px}
   #fullscreenBtn,#soundBtn,#unitBtn,#baseBtn,#study{min-height:35px}
-  #target{top:calc(max(7px,env(safe-area-inset-top)) + 113px);left:10px;right:10px;transform:none;max-width:none;padding:8px 10px;font-size:12px;line-height:1.35;text-align:left}
+  #target{top:calc(max(7px,env(safe-area-inset-top)) + 123px);left:10px;right:10px;transform:none;max-width:none;padding:8px 10px;font-size:12px;line-height:1.35;text-align:left}
   #threat,#aim{top:auto;left:10px;max-width:calc(100vw - 75px);font-size:11px;padding:6px 8px}
   #threat{bottom:calc(194px + env(safe-area-inset-bottom))}#aim{bottom:calc(166px + env(safe-area-inset-bottom))}
   #combatHealth{top:auto;bottom:calc(236px + env(safe-area-inset-bottom));left:10px;width:148px;padding:7px 9px}
@@ -102,7 +102,7 @@ body:has(#modal[style*="flex"]) #combatHealth{opacity:.2}body.base-mode #combatH
 }
 @media (orientation:portrait) and (max-width:380px){
   .stats{gap:4px}.stats .chip{font-size:10px;padding:5px 6px}
-  #target{top:calc(max(7px,env(safe-area-inset-top)) + 120px)}
+  #target{top:calc(max(7px,env(safe-area-inset-top)) + 130px)}
   .stick{width:102px;height:102px;flex-basis:102px}.knob{left:24px;top:24px}
   .actions{width:calc(100vw - 133px);gap:5px}.action{min-height:52px;height:52px}
 }
@@ -112,26 +112,100 @@ body:has(#modal[style*="flex"]) #combatHealth{opacity:.2}body.base-mode #combatH
   #aim{bottom:calc(150px + env(safe-area-inset-bottom))}
   #viewControls{bottom:calc(282px + env(safe-area-inset-bottom))}
 }
+/* Notification consolidation: never overlay the mobile interaction buttons. */
+.toast{display:none!important}
+#dangerMessage{top:25%;width:min(88vw,440px);font-size:clamp(14px,3.5vw,21px);line-height:1.45;letter-spacing:.3px;padding:9px 12px;background:rgba(24,35,45,.89);border:1px solid #b9a074;border-radius:9px;box-shadow:0 6px 22px #0009}
+@media (orientation:portrait) and (max-width:740px){#dangerMessage{top:clamp(205px,30dvh,280px);width:calc(100vw - 36px);max-width:360px}}
+/* Compact extra audio control on small portrait screens. */
+@media(max-width:740px) and (orientation:portrait){#ambientBtn{min-width:78px}.stats{scrollbar-width:none}.stats::-webkit-scrollbar{display:none}}
+
+/* Compact, categorized HUD: settings are collapsed by default. */
+.top{z-index:5;pointer-events:none}.top .stats,.top .settingsMenu{pointer-events:auto}.stats{align-items:center}.stats .chip{min-height:36px}.stats #menuBtn{min-width:42px;font-size:21px;line-height:1;padding:5px 10px}.settingsMenu{position:absolute;right:max(8px,env(safe-area-inset-right));top:calc(100% + 7px);width:min(230px,calc(100vw - 24px));padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(23,34,45,.98);border:1px solid #8da4b4;border-radius:12px;box-shadow:0 12px 32px #000b;z-index:8}.settingsMenu[hidden]{display:none!important}.settingsMenu .settingsTitle{grid-column:1/-1;font-size:13px;font-weight:800;color:#f0d19e}.settingsMenu .chip{width:100%;white-space:normal;min-height:43px;padding:8px 5px}.settingsMenu #baseBtn{grid-column:1/-1}.stats #weaponBtn{max-width:170px;overflow:hidden;text-overflow:ellipsis}.stats #weaponBtn b{color:#f1cc90}#viewControls{z-index:3}@media(max-width:740px) and (orientation:portrait){.top{align-items:flex-start}.stats{max-width:calc(100vw - 120px);justify-content:flex-end;flex-wrap:wrap;overflow:visible;gap:5px}.stats .chip{font-size:11px;padding:6px 7px;min-height:33px}.stats #weaponBtn{max-width:145px}.settingsMenu{top:calc(100% + 6px)}#target{top:calc(max(7px,env(safe-area-inset-top)) + 108px)}.top .brand{font-size:12px}}
 </style></head><body><div id="loading">正在加载森林行动…</div><div id="hud">
-<div class="top"><div><div class="brand">WORD OPS <span style="color:#d7b474">/ FOREST</span></div><div class="sub" id="mission">01 · 暮雾哨站 / 搜索装备</div></div><div class="stats"><button class="chip" id="fullscreenBtn" type="button">全屏</button><button class="chip" id="soundBtn">音效 · 开</button><button class="chip" id="unitBtn">全册复习</button><button class="chip" id="baseBtn">基地 / 地图</button><div class="chip">生命 <b id="hp">100</b></div><div class="chip">武器 <b id="gun">未装备</b> · <b id="ammo">0</b></div><button class="chip" id="study">补弹挑战</button><div class="chip">币 <b id="coins">0</b></div></div></div>
+<div class="top"><div><div class="brand">WORD OPS <span style="color:#d7b474">/ FOREST</span></div><div class="sub" id="mission">01 · 暮雾哨站 / 搜索装备</div></div><div class="stats"><button class="chip" id="unitBtn">全册复习</button><button class="chip" id="weaponBtn" type="button" aria-label="查看武器和弹药">武器 <b id="gun">未装备</b> · <b id="ammo">0</b></button><button class="chip" id="study">补弹挑战</button><div class="chip" id="coinChip">币 <b id="coins">0</b></div><button class="chip" id="menuBtn" type="button" aria-label="打开游戏设置" aria-expanded="false" aria-controls="settingsMenu">☰</button></div><div id="settingsMenu" class="settingsMenu" hidden><div class="settingsTitle">游戏设置</div><button class="chip" id="fullscreenBtn" type="button">全屏</button><button class="chip" id="soundBtn">音效 · 开</button><button class="chip" id="ambientBtn" type="button" aria-label="切换背景氛围音">氛围 · 低</button><button class="chip" id="baseBtn">基地 / 地图</button><button class="chip" id="textSize" type="button">舒适字</button></div></div>
 <div id="target">先往南走，找到军械补给箱 · 靠近按 E</div><div id="threat">暂无守卫警戒</div><div id="aim">未锁定目标</div><div class="bottom"><div class="stick touch" id="stick"><div class="knob" id="knob"></div></div><div class="actions"><button class="action" id="aimBtn">Q<small>切换目标</small></button><button class="action" id="run" aria-pressed="false">跑<small>加速：关</small></button><button class="action primary" id="interact">E<small>交互</small></button><button class="action" id="shoot">F<small>射击</small></button></div></div><div class="toast" id="toast"></div><div class="footer">导航：北=W、南=S、西=A、东=D · 先找军械箱解锁武器 · 电脑：WASD 移动 · Shift 冲刺 · E 交互 · F / 空格 射击 · Q 切换目标 · R 补弹 · 1–4 答题</div></div>
-<div id="viewControls" aria-label="地图视角缩放"><button id="zoomIn" type="button" aria-label="拉近视角">＋</button><button id="zoomOut" type="button" aria-label="拉远视角">－</button><button id="textSize" class="viewLabel" type="button" aria-label="调整文字大小">舒适字</button></div><div id="damageFlash"></div><div id="combatHealth" role="status" aria-label="生命状态"><div class="healthHead"><span>生命值 / HP</span><b id="healthPercent">100</b></div><div class="healthTrack"><div id="healthFill" class="healthFill"></div></div><div id="healthHint" class="healthHint">状态稳定</div></div><div id="dangerVignette"></div><div id="impactOverlay"></div><div id="dangerMessage"></div><div class="modal" id="modal"><div class="panel" id="panel"></div></div>
+<div id="viewControls" aria-label="地图视角缩放"><button id="zoomIn" type="button" aria-label="拉近视角">＋</button><button id="zoomOut" type="button" aria-label="拉远视角">－</button></div><div id="damageFlash"></div><div id="combatHealth" role="status" aria-label="生命状态"><div class="healthHead"><span>生命值 / HP</span><b id="healthPercent">100</b></div><div class="healthTrack"><div id="healthFill" class="healthFill"></div></div><div id="healthHint" class="healthHint">状态稳定</div></div><div id="dangerVignette"></div><div id="impactOverlay"></div><div id="dangerMessage"></div><div class="modal" id="modal"><div class="panel" id="panel"></div></div>
 <script src="words.js"></script><script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js';
 const $=id=>document.getElementById(id);
+const settingsMenu=$('settingsMenu'),menuBtn=$('menuBtn');
+function closeSettingsMenu(){settingsMenu.hidden=true;menuBtn.setAttribute('aria-expanded','false')}
+menuBtn.addEventListener('click',e=>{e.stopPropagation();settingsMenu.hidden=!settingsMenu.hidden;menuBtn.setAttribute('aria-expanded',String(!settingsMenu.hidden))});
+settingsMenu.addEventListener('click',e=>{e.stopPropagation();if(e.target.closest('button'))closeSettingsMenu()});
+document.addEventListener('pointerdown',e=>{if(!settingsMenu.hidden&&!settingsMenu.contains(e.target)&&e.target!==menuBtn)closeSettingsMenu()});
+
 let audioCtx=null,soundEnabled=true,lastWarnAt=0,lastDangerAt=0,quizActive=false,quizOptions=[],quizInput=null,activeSpeakWord='';
 let speechRate=.9;
 let chosenUnit=Number(localStorage.getItem('wordops_unit')||0);
 const UNIT_TITLES=['全册复习','Happy Holiday','Home Sweet Home','Same or Different?','Amazing Plants and Animals','What a Delicious Meal!','Plan for Yourself','When Tomorrow Comes',"Let's Communicate!"];
 function initAudio(){if(!soundEnabled)return null;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}catch(e){return null}}
+// Low-volume, procedural ambience. No remote audio files or speech engine required.
+const AMBIENT_LEVELS=[0,.12,.22];
+let ambientLevel=(()=>{const raw=localStorage.getItem('wordops_ambient_level');const v=raw===null?1:Number(raw);return Number.isInteger(v)&&v>=0&&v<=2?v:1})();
+let ambientNodes=null,ambientSpeech=false,ambientTick=0;
+function initAmbience(){
+  if(ambientNodes||ambientLevel===0)return;
+  const c=initAmbientContext();if(!c)return;
+  try{
+    const master=c.createGain();master.gain.value=0;master.connect(c.destination);
+    const forest=c.createGain(),base=c.createGain();forest.gain.value=0;base.gain.value=0;
+    forest.connect(master);base.connect(master);
+    // A short seamless pseudo-wind texture, filtered to keep the midrange clear for speech.
+    const seconds=3,buffer=c.createBuffer(1,Math.floor(c.sampleRate*seconds),c.sampleRate),data=buffer.getChannelData(0);
+    for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.38;
+    const noise=c.createBufferSource();noise.buffer=buffer;noise.loop=true;
+    const wind=c.createBiquadFilter();wind.type='lowpass';wind.frequency.value=420;
+    const windGain=c.createGain();windGain.gain.value=.23;
+    noise.connect(wind);wind.connect(windGain);windGain.connect(forest);noise.start();
+    // Very quiet base room hum, no melody or distracting beat.
+    const hum=c.createOscillator();hum.type='sine';hum.frequency.value=82;
+    const humGain=c.createGain();humGain.gain.value=.075;
+    hum.connect(humGain);humGain.connect(base);hum.start();
+    const air=c.createOscillator();air.type='sine';air.frequency.value=164;
+    const airGain=c.createGain();airGain.gain.value=.017;
+    air.connect(airGain);airGain.connect(base);air.start();
+    ambientNodes={master,forest,base};updateAmbience(true);
+  }catch(e){console.warn('Ambience unavailable',e)}
+}
+function initAmbientContext(){
+  try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
+    return audioCtx;
+  }catch(e){return null}
+}
+function updateAmbience(immediate=false){
+  if(!ambientNodes)return;
+  const c=audioCtx,now=c.currentTime;
+  const baseMode=document.body.classList.contains('base-mode');
+  const learning=quizActive||(state==='modal'&&!baseMode)||ambientSpeech;
+  const target=AMBIENT_LEVELS[ambientLevel]*(learning?.12:1);
+  const smooth=(node,value)=>{node.gain.cancelScheduledValues(now);node.gain.setTargetAtTime(value,now,immediate?.015:.35)};
+  smooth(ambientNodes.master,target);
+  smooth(ambientNodes.base,baseMode?1:0);
+  smooth(ambientNodes.forest,baseMode?0:1);
+}
+function setAmbientButton(){
+  const b=$('ambientBtn');if(!b)return;
+  b.textContent=['氛围 · 关','氛围 · 低','氛围 · 中'][ambientLevel];
+  b.setAttribute('aria-pressed',String(ambientLevel!==0));
+}
+$('ambientBtn').onclick=()=>{
+  ambientLevel=(ambientLevel+1)%3;
+  localStorage.setItem('wordops_ambient_level',String(ambientLevel));
+  setAmbientButton();if(ambientLevel) initAmbience();updateAmbience();
+};
+setAmbientButton();
+// Mobile browsers require a real user gesture before starting audio.
+document.addEventListener('pointerdown',()=>{if(ambientLevel)initAmbience()},{once:true});
+document.addEventListener('keydown',()=>{if(ambientLevel)initAmbience()},{once:true});
 function beep(freq=440,duration=.13,kind='sine',gain=.09,slide=0){let c=initAudio();if(!c)return;let o=c.createOscillator(),v=c.createGain(),t=c.currentTime;o.type=kind;o.frequency.setValueAtTime(freq,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(45,freq+slide),t+duration);v.gain.setValueAtTime(.001,t);v.gain.exponentialRampToValueAtTime(Math.max(.002,gain),t+.009);v.gain.exponentialRampToValueAtTime(.001,t+duration);o.connect(v);v.connect(c.destination);o.start(t);o.stop(t+duration+.02)}
 function sound(name){if(!soundEnabled)return;switch(name){case 'warning':beep(440,.18,'triangle',.065,-180);setTimeout(()=>beep(330,.17,'triangle',.06,-90),170);break;case 'danger':beep(680,.16,'sawtooth',.09,-250);setTimeout(()=>beep(540,.16,'sawtooth',.07,-190),165);break;case 'shot':beep(145,.14,'sawtooth',.12,-90);beep(800,.055,'square',.045,-540);break;case 'hit':beep(300,.10,'triangle',.11,-190);break;case 'hurt':beep(140,.32,'sawtooth',.14,-90);break;case 'kill':beep(380,.12,'triangle',.08,-200);setTimeout(()=>beep(180,.22,'triangle',.06,-80),120);break;case 'correct':beep(580,.11,'sine',.09,180);setTimeout(()=>beep(840,.2,'sine',.08,140),115);break;case 'wrong':beep(240,.19,'triangle',.08,-70);break;case 'reward':beep(520,.12,'sine',.09,160);setTimeout(()=>beep(790,.18,'sine',.09,210),130);break;case 'win':for(let i=0;i<4;i++)setTimeout(()=>beep([440,554,660,880][i],.2,'sine',.09),i*160);break}}
-function speakWord(word){activeSpeakWord=word;if(!('speechSynthesis' in window)){toast('当前浏览器不支持英语朗读');return}try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=speechRate;u.pitch=1;let voices=speechSynthesis.getVoices(),us=voices.find(v=>v.lang.toLowerCase()==='en-us'&&v.localService)||voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.toLowerCase().startsWith('en'));if(us)u.voice=us;speechSynthesis.speak(u)}catch(e){toast('朗读暂时不可用')}}
+function speakWord(word){activeSpeakWord=word;if(!('speechSynthesis' in window)){toast('当前浏览器不支持英语朗读');return}try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=speechRate;u.pitch=1;let voices=speechSynthesis.getVoices(),us=voices.find(v=>v.lang.toLowerCase()==='en-us'&&v.localService)||voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.toLowerCase().startsWith('en'));if(us)u.voice=us;ambientSpeech=true;updateAmbience();u.onend=u.onerror=()=>{ambientSpeech=false;updateAmbience()};speechSynthesis.speak(u)}catch(e){toast('朗读暂时不可用')}}
 function unlockQuizSpeech(label){const b=document.getElementById('speakBtn');if(!b)return;b.hidden=false;b.style.display='';b.textContent=label||'听正确发音';addSpeechSpeed()}
 function addSpeechSpeed(){let t=document.querySelector('.quizTools');if(!t||document.getElementById('speechSpeed'))return;let b=document.createElement('button');b.className='btn';b.id='speechSpeed';b.type='button';b.textContent='语速：正常';b.onclick=()=>{speechRate=speechRate===.9?.68:.9;b.textContent=speechRate===.9?'语速：正常':'语速：慢速';if(activeSpeakWord)speakWord(activeSpeakWord)};t.append(b)}
 function updateUnitLabel(){$('unitBtn').textContent=chosenUnit?' Unit '+chosenUnit:'全册复习'}
 function changeUnit(){if(state==='play'){modal('选择英语训练单元','切换后，新出现的题目将从所选单元抽取。',[...UNIT_TITLES.map((name,i)=>({label:(i===chosenUnit?'当前 · ':'')+(i===0?'综合复习':'Unit '+i+' · '+name),fn:()=>{chosenUnit=i;localStorage.setItem('wordops_unit',i);updateUnitLabel();resume();toast('已切换：'+(i?'Unit '+i:'全册复习'))}})),{label:'返回行动',fn:resume}])}else{chosenUnit=(chosenUnit+1)%9;localStorage.setItem('wordops_unit',chosenUnit);updateUnitLabel()}}
-function flashDamage(){let e=$('damageFlash');e.classList.add('flash');setTimeout(()=>e.classList.remove('flash'),110);const impact=$('impactOverlay');impact.classList.remove('impact');void impact.offsetWidth;impact.classList.add('impact');document.body.classList.remove('combat-shake');void document.body.offsetWidth;if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.body.classList.add('combat-shake');setTimeout(()=>document.body.classList.remove('combat-shake'),400);const warning=$('dangerMessage');warning.textContent=hp<=0?'行动失败':hp<=30?'严重受伤！立即撤退！':'遭到攻击！';warning.classList.remove('show');void warning.offsetWidth;warning.classList.add('show');setTimeout(()=>warning.classList.remove('show'),1450);updateCombatHealth()}
+function flashDamage(){let e=$('damageFlash');e.classList.add('flash');setTimeout(()=>e.classList.remove('flash'),110);const impact=$('impactOverlay');impact.classList.remove('impact');void impact.offsetWidth;impact.classList.add('impact');document.body.classList.remove('combat-shake');void document.body.offsetWidth;if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.body.classList.add('combat-shake');setTimeout(()=>document.body.classList.remove('combat-shake'),400);const warning=$('dangerMessage');warning.textContent=hp<=0?'行动失败 · 生命 -13':hp<=30?'严重受伤！生命 -13 · 立即撤退！':'遭到攻击！生命 -13';toast.combatUntil=Date.now()+1500;clearTimeout(toast.t);warning.classList.remove('show');void warning.offsetWidth;warning.classList.add('show');setTimeout(()=>warning.classList.remove('show'),1450);updateCombatHealth()}
 function updateCombatHealth(){const max=100+progress.upgrades.armor*15;const ratio=Math.max(0,Math.min(1,hp/max));$('healthPercent').textContent=hp+' / '+max;$('healthFill').style.width=(ratio*100)+'%';$('healthHint').textContent=ratio<=.3?'危险！寻找医疗包':ratio<=.6?'受伤 · 注意掩护':'状态稳定';$('combatHealth').classList.toggle('low',ratio<=.6);document.body.classList.toggle('critical-health',ratio<=.3&&hp>0);$('dangerVignette').style.opacity=hp<=0?'.85':ratio<=.3?'':ratio<=.6?String((.6-ratio)*.9):'0'}
 function sparks(at,color=0xffd06c,count=8){for(let i=0;i<count;i++){let m=new THREE.Mesh(new THREE.IcosahedronGeometry(.055,0),new THREE.MeshBasicMaterial({color}));m.position.copy(at);scene.add(m);let dir=new THREE.Vector3((Math.random()-.5)*2,Math.random()*1.6,(Math.random()-.5)*2);let born=performance.now();function tick(){let k=(performance.now()-born)/330;if(k>=1){scene.remove(m);m.geometry.dispose();m.material.dispose();return}m.position.copy(at).addScaledVector(dir,k);m.scale.setScalar(1-k);requestAnimationFrame(tick)}requestAnimationFrame(tick)}}
 
@@ -224,8 +298,19 @@ const baseAvatar=soldier();baseAvatar.position.set(0,0,4);baseGroup.add(baseAvat
 baseGroup.visible=false;
 function showBaseWorld(on){document.body.classList.toggle('base-mode',on);baseVisible=on;baseGroup.visible=on;for(let o of missionWorld)if(o!==ambient&&o!==sun)o.visible=!on;scene.background.set(on?'#344b50':region.sky);scene.fog.color.set(on?'#455c58':region.fog)}
 let state='intro',hp=100,ammo=0,tier=-1,coins=0,bag=0,core=false,move={x:0,z:0},running=false,last=performance.now(),time=0,shotLine=null;
-function ui(){ $('hp').textContent=hp;updateCombatHealth();$('ammo').textContent=ammo;$('coins').textContent=coins;$('gun').textContent=tier<0?'未装备':tiers[tier].name;$('gun').style.color=tier<0?'#ddd':tiers[tier].color;$('shoot').disabled=tier<0||ammo<=0;$('study').disabled=false;$('study').textContent=tier<0?'如何获得武器':'补弹挑战 +1'}
-function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2500)}
+function ui(){ updateCombatHealth();$('ammo').textContent=ammo;$('coins').textContent=coins;$('gun').textContent=tier<0?'未装备':tiers[tier].name;$('gun').style.color=tier<0?'#ddd':tiers[tier].color;$('shoot').disabled=tier<0||ammo<=0;$('study').disabled=false;$('study').textContent='补弹挑战 +1';$('study').style.display=tier<0?'none':'';$('weaponBtn').setAttribute('aria-label',tier<0?'尚未装备武器，点击查看获得方式':'当前武器 '+tiers[tier].name+'，弹药 '+ammo)}
+function toast(t){
+  // A single upper notification avoids covering the portrait touch controls.
+  const notice=$('dangerMessage');
+  if(!notice||document.body.classList.contains('base-mode'))return;
+  if(Date.now()<(toast.combatUntil||0))return; // Combat feedback takes priority.
+  clearTimeout(toast.t);
+  notice.textContent=t;
+  notice.classList.remove('show');
+  void notice.offsetWidth;
+  notice.classList.add('show');
+  toast.t=setTimeout(()=>notice.classList.remove('show'),2200);
+}
 function modal(title,body,buttons){state='modal';$('modal').style.display='flex';$('panel').innerHTML=`<div class="eyebrow">WORD OPS / FIELD OPERATION</div><h1>${title}</h1><p>${body}</p><div class="choices" id="modalButtons"></div>`;for(let b of buttons){let e=document.createElement('button');e.className='btn '+(b.gold?'gold':'');e.textContent=b.label;e.onclick=b.fn;$('modalButtons').append(e)}}
 function resume(){quizActive=false;quizOptions=[];quizInput=null;showBaseWorld(false);$('modal').style.display='none';state='play';ui()}
 function start(){baseHome()}
@@ -293,7 +378,7 @@ function targetGuards(){return guards.map((g,i)=>({g,i,d:dist(hero.position,g.o.
 function cycleTarget(){let list=targetGuards();if(!list.length){selectedGuard=-1;toast('附近没有射程内的守卫');return}let index=list.findIndex(x=>x.i===selectedGuard);selectedGuard=list[(index+1)%list.length].i;toast('已锁定守卫 '+(selectedGuard+1)+' · '+Math.round(dist(hero.position,guards[selectedGuard].o.position))+'m')}
 function shoot(){if(state!=='play')return;if(tier<0){toast('先用英语解锁武器箱');return}if(ammo<1){toast('子弹不足：点击顶部「补弹挑战 +1」或按 R');return}ammo--;sound('shot');sparks(hero.position.clone().add(new THREE.Vector3(0,1.45,0)),0xffd587,4);let list=targetGuards();let selected=list.find(x=>x.i===selectedGuard);let g=selected?selected.g:(list[0]&&list[0].g);if(!g){toast('没有射程内的守卫，靠近后点「切换目标」');ui();return}selectedGuard=guards.indexOf(g);let a=hero.position.clone().add(new THREE.Vector3(0,1.5,0)),b=g.o.position.clone().add(new THREE.Vector3(0,1.5,0));const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color:0xffd78c}));scene.add(line);setTimeout(()=>{scene.remove(line);line.geometry.dispose();line.material.dispose()},110);g.hp-=tiers[tier].damage;g.alert=5;sound('hit');sparks(b,0xffb76d,9);if(g.hp<=0){sound('kill');g.dead=true;scene.remove(g.o);scene.remove(g.ring);selectedGuard=-1;let loot=['ammo','med','coins'][Math.floor(Math.random()*3)];let it={type:'drop',name:'守卫掉落 · '+({ammo:'弹药',med:'医疗包',coins:'能量币'}[loot]),loot,x:g.o.position.x,z:g.o.position.z};spawnItem(it);drops.push(it);toast('守卫被击倒！靠近掉落箱，答词后领取战利品')}else toast('命中守卫！剩余生命 '+g.hp);ui()}
 function collision(x,z){if(Math.abs(x)>49||Math.abs(z)>49)return true;return blocks.some(b=>Math.abs(x-b.x)<b.rx/2+.43&&Math.abs(z-b.z)<b.rz/2+.43)}
-function step(dt){time+=dt;if(state==='play'){let vx=move.x,vz=move.z;if(keys.has('a')||keys.has('arrowleft'))vx=-1;if(keys.has('d')||keys.has('arrowright'))vx=1;if(keys.has('w')||keys.has('arrowup'))vz=-1;if(keys.has('s')||keys.has('arrowdown'))vz=1;let len=Math.hypot(vx,vz);if(len>.06){vx/=len;vz/=len;let speed=(running||keys.has('shift'))?9:5.5;let x=hero.position.x+vx*speed*dt,z=hero.position.z+vz*speed*dt;if(!collision(x,hero.position.z))hero.position.x=x;if(!collision(hero.position.x,z))hero.position.z=z;hero.rotation.y=Math.atan2(vx,vz);hero.userData.walk=(hero.userData.walk||0)+dt*speed;hero.position.y=Math.sin(hero.userData.walk*2)*.05}else hero.position.y=0;for(let g of guards){if(g.dead)continue;g.phase+=dt*.5;let dx=hero.position.x-g.o.position.x,dz=hero.position.z-g.o.position.z;let distance=Math.hypot(dx,dz);if(distance<10)g.alert=2.5;g.ring.position.x=g.o.position.x;g.ring.position.z=g.o.position.z;g.ring.material.opacity=distance<10?.45:.13;g.ring.material.color.set(distance<10?'#ff514b':'#ffc06c');if(g.alert>0){g.alert-=dt;if(distance>1.9){let nx=g.o.position.x+dx/distance*dt*2.8,nz=g.o.position.z+dz/distance*dt*2.8;if(!collision(nx,g.o.position.z))g.o.position.x=nx;if(!collision(g.o.position.x,nz))g.o.position.z=nz}if(distance<1.8){g.hit=(g.hit||0)-dt;if(g.hit<=0){hp=Math.max(0,hp-13);g.hit=2;sound('hurt');flashDamage();toast('守卫攻击！生命 -13');if(hp<=0)modal('任务失败','守卫击倒了你。重新开始，先通过英语获得更好的武器。',[{label:'重新出发',gold:true,fn:()=>location.reload()}])}}}else{let tx=g.homeX+Math.sin(g.phase)*2,tz=g.homeZ+Math.cos(g.phase)*2;g.o.position.x+=(tx-g.o.position.x)*Math.min(1,dt);g.o.position.z+=(tz-g.o.position.z)*Math.min(1,dt)}g.o.rotation.y=Math.atan2(dx,dz)}let nearest=guards.filter(g=>!g.dead).map(g=>({g,d:dist(hero.position,g.o.position)})).sort((a,b)=>a.d-b.d)[0];
+function step(dt){time+=dt;if(state==='play'){let vx=move.x,vz=move.z;if(keys.has('a')||keys.has('arrowleft'))vx=-1;if(keys.has('d')||keys.has('arrowright'))vx=1;if(keys.has('w')||keys.has('arrowup'))vz=-1;if(keys.has('s')||keys.has('arrowdown'))vz=1;let len=Math.hypot(vx,vz);if(len>.06){vx/=len;vz/=len;let speed=(running||keys.has('shift'))?9:5.5;let x=hero.position.x+vx*speed*dt,z=hero.position.z+vz*speed*dt;if(!collision(x,hero.position.z))hero.position.x=x;if(!collision(hero.position.x,z))hero.position.z=z;hero.rotation.y=Math.atan2(vx,vz);hero.userData.walk=(hero.userData.walk||0)+dt*speed;hero.position.y=Math.sin(hero.userData.walk*2)*.05}else hero.position.y=0;for(let g of guards){if(g.dead)continue;g.phase+=dt*.5;let dx=hero.position.x-g.o.position.x,dz=hero.position.z-g.o.position.z;let distance=Math.hypot(dx,dz);if(distance<10)g.alert=2.5;g.ring.position.x=g.o.position.x;g.ring.position.z=g.o.position.z;g.ring.material.opacity=distance<10?.45:.13;g.ring.material.color.set(distance<10?'#ff514b':'#ffc06c');if(g.alert>0){g.alert-=dt;if(distance>1.9){let nx=g.o.position.x+dx/distance*dt*2.8,nz=g.o.position.z+dz/distance*dt*2.8;if(!collision(nx,g.o.position.z))g.o.position.x=nx;if(!collision(g.o.position.x,nz))g.o.position.z=nz}if(distance<1.8){g.hit=(g.hit||0)-dt;if(g.hit<=0){hp=Math.max(0,hp-13);g.hit=2;sound('hurt');flashDamage();if(hp<=0)modal('任务失败','守卫击倒了你。重新开始，先通过英语获得更好的武器。',[{label:'重新出发',gold:true,fn:()=>location.reload()}])}}}else{let tx=g.homeX+Math.sin(g.phase)*2,tz=g.homeZ+Math.cos(g.phase)*2;g.o.position.x+=(tx-g.o.position.x)*Math.min(1,dt);g.o.position.z+=(tz-g.o.position.z)*Math.min(1,dt)}g.o.rotation.y=Math.atan2(dx,dz)}let nearest=guards.filter(g=>!g.dead).map(g=>({g,d:dist(hero.position,g.o.position)})).sort((a,b)=>a.d-b.d)[0];
 let danger=nearest&&nearest.d<1.8,alert=nearest&&nearest.d<10;if(danger&&time-lastDangerAt>2.5){sound('danger');lastDangerAt=time}else if(alert&&!danger&&time-lastWarnAt>5){sound('warning');lastWarnAt=time}
 $('threat').className=danger?'danger':alert?'alert':'';
 $('threat').textContent=danger?' 守卫正在攻击！距离 '+nearest.d.toFixed(1)+'m':alert?'🟠 已进入守卫警戒圈 · '+nearest.d.toFixed(1)+'m（10m内追击）':' 警戒范围外（10m警戒 / 1.8m攻击）';
@@ -313,9 +398,9 @@ if(k==='r'&&state==='play'){if(tier>=0)question({type:'ammo',name:'单词补弹 
 if(k==='escape'&&state==='play')openPause();
 });window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));
 function openPause(){modal('暂停行动',`你正在 ${region.title}。进入基地或切换地图会结束当前行动，未撤离的奖励不会存入基地。`,[{label:'继续行动',gold:true,fn:resume},{label:'返回基地',fn:()=>location.href=location.pathname+'?map='+mapIndex},{label:'切换地图',fn:chooseMap}])}
-$('interact').addEventListener('pointerdown',e=>{e.preventDefault();interact()});$('shoot').addEventListener('pointerdown',e=>{e.preventDefault();shoot()});$('aimBtn').addEventListener('pointerdown',e=>{e.preventDefault();cycleTarget()});$('baseBtn').addEventListener('pointerdown',e=>{e.preventDefault();if(state==='play')openPause();else baseHome()});$('soundBtn').onclick=()=>{soundEnabled=!soundEnabled;$('soundBtn').textContent=soundEnabled?'音效 · 开':'音效 · 关';if(soundEnabled)initAudio()};$('unitBtn').onclick=changeUnit;updateUnitLabel();document.addEventListener('pointerdown',()=>initAudio(),{once:true});$('study').onclick=()=>{if(tier<0){toast('先到军械补给箱：跟随目标方向走，距离4.5米内按 E / 交互，答题获得武器');return}if(state==='play')question({type:'ammo',name:'单词补弹 +1'})};
+$('interact').addEventListener('pointerdown',e=>{e.preventDefault();interact()});$('shoot').addEventListener('pointerdown',e=>{e.preventDefault();shoot()});$('aimBtn').addEventListener('pointerdown',e=>{e.preventDefault();cycleTarget()});$('baseBtn').addEventListener('pointerdown',e=>{e.preventDefault();closeSettingsMenu();if(state==='play')openPause();else baseHome()});$('soundBtn').onclick=()=>{soundEnabled=!soundEnabled;$('soundBtn').textContent=soundEnabled?'音效 · 开':'音效 · 关';if(soundEnabled)initAudio()};$('unitBtn').onclick=changeUnit;updateUnitLabel();document.addEventListener('pointerdown',()=>initAudio(),{once:true});$('weaponBtn').onclick=()=>{if(tier<0){toast('沿目标方向找到军械补给箱，靠近4.5米内点击交互，完成英语挑战即可获得武器');return}toast('当前武器：'+tiers[tier].name+' · 剩余弹药 '+ammo+'；补弹请点击补弹挑战')};$('study').onclick=()=>{if(tier<0){toast('先到军械补给箱：跟随目标方向走，距离4.5米内按 E / 交互，答题获得武器');return}if(state==='play')question({type:'ammo',name:'单词补弹 +1'})};
 $('run').addEventListener('pointerdown',e=>{e.preventDefault();running=!running;const b=$('run');b.setAttribute('aria-pressed',String(running));b.querySelector('small').textContent=running?'加速：开':'加速：关';b.classList.toggle('is-running',running)});
 let stick=$('stick'),knob=$('knob');function stickMove(e){let r=stick.getBoundingClientRect(),x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2),l=Math.hypot(x,y),m=r.width*.33;if(l>m){x=x/l*m;y=y/l*m}move.x=x/m;move.z=y/m;knob.style.transform=`translate(${x}px,${y}px)`}stick.onpointerdown=e=>{stick.setPointerCapture(e.pointerId);stickMove(e)};stick.onpointermove=e=>{if(stick.hasPointerCapture(e.pointerId))stickMove(e)};function stopStick(){move.x=move.z=0;knob.style.transform='translate(0,0)'}stick.onpointerup=stopStick;stick.onpointercancel=stopStick;
 function resizeGame(){const w=window.innerWidth,h=window.innerHeight;camera.aspect=w/h;camera.fov=isPhonePortrait()?67:57;camera.updateProjectionMatrix();renderer.setSize(w,h);document.documentElement.style.setProperty('--screen-height',h+'px')}window.addEventListener('resize',resizeGame);window.addEventListener('orientationchange',()=>setTimeout(resizeGame,200));resizeGame();
-const fullBtn=$('fullscreenBtn');fullBtn.onclick=async()=>{try{if(document.fullscreenElement){await document.exitFullscreen();return}const root=document.documentElement;const req=root.requestFullscreen||root.webkitRequestFullscreen;if(req){await req.call(root);return}toast('此浏览器不支持网页全屏，可尝试从浏览器菜单添加到主屏幕使用')}catch(e){toast('全屏不可用：请尝试浏览器菜单或添加到主屏幕')}};document.addEventListener('fullscreenchange',()=>{fullBtn.textContent=document.fullscreenElement?'退出全屏':'全屏';resizeGame()});function animate(t){requestAnimationFrame(animate);let dt=Math.min(.05,(t-last)/1000);last=t;try{step(dt)}catch(e){console.error(e);$('target').textContent='运行错误：'+e.message}}requestAnimationFrame(animate);$('loading').remove();ui();start();
+const fullBtn=$('fullscreenBtn');fullBtn.onclick=async()=>{try{if(document.fullscreenElement){await document.exitFullscreen();return}const root=document.documentElement;const req=root.requestFullscreen||root.webkitRequestFullscreen;if(req){await req.call(root);return}toast('此浏览器不支持网页全屏，可尝试从浏览器菜单添加到主屏幕使用')}catch(e){toast('全屏不可用：请尝试浏览器菜单或添加到主屏幕')}};document.addEventListener('fullscreenchange',()=>{fullBtn.textContent=document.fullscreenElement?'退出全屏':'全屏';resizeGame()});function animate(t){requestAnimationFrame(animate);if(t-ambientTick>500){ambientTick=t;updateAmbience()}let dt=Math.min(.05,(t-last)/1000);last=t;try{step(dt)}catch(e){console.error(e);$('target').textContent='运行错误：'+e.message}}requestAnimationFrame(animate);$('loading').remove();ui();start();
 </script></body></html>
